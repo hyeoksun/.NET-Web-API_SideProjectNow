@@ -1,0 +1,929 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SideProject</name>
+    </assembly>
+    <members>
+        <member name="M:SideProject.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
+            </summary>
+            <param name="description">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The ID as a string.</returns>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.HelpPageConfig">
+            <summary>
+            Use this class to customize the Help Page.
+            For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
+            or you can provide the samples for the requests/responses.
+            </summary>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.Controllers.HelpController">
+            <summary>
+            The controller that will handle requests for the help page.
+            </summary>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetDocumentationProvider(System.Web.Http.HttpConfiguration,System.Web.Http.Description.IDocumentationProvider)">
+            <summary>
+            Sets the documentation provider for help page.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="documentationProvider">The documentation provider.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleObjects(System.Web.Http.HttpConfiguration,System.Collections.Generic.IDictionary{System.Type,System.Object})">
+            <summary>
+            Sets the objects that will be used by the formatters to produce sample requests/responses.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleObjects">The sample objects.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type and action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample request directly for the specified media type and action with parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type of the action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample response directly for the specified media type of the action with specific parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForMediaType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Sets the sample directly for all actions with the specified media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Sets the sample directly for all actions with the specified type and media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The parameter type or return type of an action.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <returns>The help page sample generator.</returns>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.SetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration,SideProject.Areas.HelpPage.HelpPageSampleGenerator)">
+            <summary>
+            Sets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleGenerator">The help page sample generator.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.GetModelDescriptionGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the model description generator.
+            </summary>
+            <param name="config">The configuration.</param>
+            <returns>The <see cref="T:SideProject.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator"/></returns>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageApiModel(System.Web.Http.HttpConfiguration,System.String)">
+            <summary>
+            Gets the model that represents an API displayed on the help page. The model is initialized on the first call and cached for subsequent calls.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="apiDescriptionId">The <see cref="T:System.Web.Http.Description.ApiDescription"/> ID.</param>
+            <returns>
+            An <see cref="T:SideProject.Areas.HelpPage.Models.HelpPageApiModel"/>
+            </returns>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.ModelDescriptions.ModelDescription">
+            <summary>
+            Describes a type model.
+            </summary>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator">
+            <summary>
+            Generates model descriptions for given types.
+            </summary>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.ModelDescriptions.ModelNameAttribute">
+            <summary>
+            Use this attribute to change the name of the <see cref="T:SideProject.Areas.HelpPage.ModelDescriptions.ModelDescription"/> generated for a type.
+            </summary>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.Models.HelpPageApiModel">
+            <summary>
+            The model that represents an API displayed on the help page.
+            </summary>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.Models.HelpPageApiModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SideProject.Areas.HelpPage.Models.HelpPageApiModel"/> class.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription">
+            <summary>
+            Gets or sets the <see cref="P:SideProject.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription"/> that describes the API.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.Models.HelpPageApiModel.UriParameters">
+            <summary>
+            Gets or sets the <see cref="T:SideProject.Areas.HelpPage.ModelDescriptions.ParameterDescription"/> collection that describes the URI parameters for the API.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.Models.HelpPageApiModel.RequestDocumentation">
+            <summary>
+            Gets or sets the documentation for the request.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.Models.HelpPageApiModel.RequestModelDescription">
+            <summary>
+            Gets or sets the <see cref="T:SideProject.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the request body.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.Models.HelpPageApiModel.RequestBodyParameters">
+            <summary>
+            Gets the request body parameter descriptions.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.Models.HelpPageApiModel.ResourceDescription">
+            <summary>
+            Gets or sets the <see cref="T:SideProject.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the resource.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.Models.HelpPageApiModel.ResourceProperties">
+            <summary>
+            Gets the resource property descriptions.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.Models.HelpPageApiModel.SampleRequests">
+            <summary>
+            Gets the sample requests associated with the API.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.Models.HelpPageApiModel.SampleResponses">
+            <summary>
+            Gets the sample responses associated with the API.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.Models.HelpPageApiModel.ErrorMessages">
+            <summary>
+            Gets the error messages associated with this model.
+            </summary>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.HelpPageSampleGenerator">
+            <summary>
+            This class will generate the samples for the help page.
+            </summary>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleGenerator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SideProject.Areas.HelpPage.HelpPageSampleGenerator"/> class.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.HelpPageSampleGenerator.ActualHttpMessageTypes">
+            <summary>
+            Gets CLR types that are used as the content of <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples">
+            <summary>
+            Gets the objects that are used directly as samples for certain actions.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects">
+            <summary>
+            Gets the objects that are serialized as samples by the supported formatters.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories">
+            <summary>
+            Gets factories for the objects that the supported formatters will serialize as samples. Processed in order,
+            stopping when the factory successfully returns a non-<see langref="null"/> object.
+            </summary>
+            <remarks>
+            Collection includes just <see cref="M:SideProject.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)"/> initially. Use
+            <code>SampleObjectFactories.Insert(0, func)</code> to provide an override and
+            <code>SampleObjectFactories.Add(func)</code> to provide a fallback.</remarks>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleGenerator.GetSampleRequests(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the request body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleGenerator.GetSampleResponses(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the response body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleGenerator.GetSample(System.Web.Http.Description.ApiDescription,SideProject.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Gets the request or response body samples.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleGenerator.GetActionSample(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Type,System.Net.Http.Formatting.MediaTypeFormatter,System.Net.Http.Headers.MediaTypeHeaderValue,SideProject.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Search for samples that are provided directly through <see cref="P:SideProject.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples"/>.
+            </summary>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="type">The CLR type.</param>
+            <param name="formatter">The formatter.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The sample that matches the parameters.</returns>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleGenerator.GetSampleObject(System.Type)">
+            <summary>
+            Gets the sample object that will be serialized by the formatters. 
+            First, it will look at the <see cref="P:SideProject.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects"/>. If no sample object is found, it will try to create
+            one using <see cref="M:SideProject.Areas.HelpPage.HelpPageSampleGenerator.DefaultSampleObjectFactory(SideProject.Areas.HelpPage.HelpPageSampleGenerator,System.Type)"/> (which wraps an <see cref="T:SideProject.Areas.HelpPage.ObjectGenerator"/>) and other
+            factories in <see cref="P:SideProject.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The sample object.</returns>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleGenerator.ResolveHttpRequestMessageType(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Resolves the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The type.</returns>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleGenerator.ResolveType(System.Web.Http.Description.ApiDescription,System.String,System.String,System.Collections.Generic.IEnumerable{System.String},SideProject.Areas.HelpPage.SampleDirection,System.Collections.ObjectModel.Collection{System.Net.Http.Formatting.MediaTypeFormatter}@)">
+            <summary>
+            Resolves the type of the action parameter or return value when <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/> is used.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or a response.</param>
+            <param name="formatters">The formatters.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleGenerator.WriteSampleObjectUsingFormatter(System.Net.Http.Formatting.MediaTypeFormatter,System.Object,System.Type,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Writes the sample object using formatter.
+            </summary>
+            <param name="formatter">The formatter.</param>
+            <param name="value">The value.</param>
+            <param name="type">The type.</param>
+            <param name="mediaType">Type of the media.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.HelpPageSampleKey">
+            <summary>
+            This is used to identify the place where the sample should be applied.
+            </summary>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Creates a new <see cref="T:SideProject.Areas.HelpPage.HelpPageSampleKey"/> based on media type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Creates a new <see cref="T:SideProject.Areas.HelpPage.HelpPageSampleKey"/> based on media type and CLR type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The CLR type.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleKey.#ctor(SideProject.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:SideProject.Areas.HelpPage.HelpPageSampleKey"/> based on <see cref="P:SideProject.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="sampleDirection">The <see cref="P:SideProject.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,SideProject.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:SideProject.Areas.HelpPage.HelpPageSampleKey"/> based on media type, <see cref="P:SideProject.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The <see cref="P:SideProject.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.HelpPageSampleKey.ControllerName">
+            <summary>
+            Gets the name of the controller.
+            </summary>
+            <value>
+            The name of the controller.
+            </value>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.HelpPageSampleKey.ActionName">
+            <summary>
+            Gets the name of the action.
+            </summary>
+            <value>
+            The name of the action.
+            </value>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.HelpPageSampleKey.MediaType">
+            <summary>
+            Gets the media type.
+            </summary>
+            <value>
+            The media type.
+            </value>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.HelpPageSampleKey.ParameterNames">
+            <summary>
+            Gets the parameter names.
+            </summary>
+        </member>
+        <member name="P:SideProject.Areas.HelpPage.HelpPageSampleKey.SampleDirection">
+            <summary>
+            Gets the <see cref="P:SideProject.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.
+            </summary>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.ImageSample">
+            <summary>
+            This represents an image sample on the help page. There's a display template named ImageSample associated with this class.
+            </summary>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.ImageSample.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SideProject.Areas.HelpPage.ImageSample"/> class.
+            </summary>
+            <param name="src">The URL of an image.</param>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.InvalidSample">
+            <summary>
+            This represents an invalid sample on the help page. There's a display template named InvalidSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.ObjectGenerator">
+            <summary>
+            This class will create an object of a given type and populate it with sample data.
+            </summary>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)">
+            <summary>
+            Generates an object for a given type. The type needs to be public, have a public default constructor and settable public properties/fields. Currently it supports the following types:
+            Simple types: <see cref="T:System.Int32"/>, <see cref="T:System.String"/>, <see cref="T:System.Enum"/>, <see cref="T:System.DateTime"/>, <see cref="T:System.Uri"/>, etc.
+            Complex types: POCO types.
+            Nullables: <see cref="T:System.Nullable`1"/>.
+            Arrays: arrays of simple types or complex types.
+            Key value pairs: <see cref="T:System.Collections.Generic.KeyValuePair`2"/>
+            Tuples: <see cref="T:System.Tuple`1"/>, <see cref="T:System.Tuple`2"/>, etc
+            Dictionaries: <see cref="T:System.Collections.Generic.IDictionary`2"/> or anything deriving from <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+            Collections: <see cref="T:System.Collections.Generic.IList`1"/>, <see cref="T:System.Collections.Generic.IEnumerable`1"/>, <see cref="T:System.Collections.Generic.ICollection`1"/>, <see cref="T:System.Collections.IList"/>, <see cref="T:System.Collections.IEnumerable"/>, <see cref="T:System.Collections.ICollection"/> or anything deriving from <see cref="T:System.Collections.Generic.ICollection`1"/> or <see cref="T:System.Collections.IList"/>.
+            Queryables: <see cref="T:System.Linq.IQueryable"/>, <see cref="T:System.Linq.IQueryable`1"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>An object of the given type.</returns>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.SampleDirection">
+            <summary>
+            Indicates whether the sample is used for request or response
+            </summary>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.TextSample">
+            <summary>
+            This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:SideProject.Areas.HelpPage.XmlDocumentationProvider">
+            <summary>
+            A custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> that reads the API documentation from an XML documentation file.
+            </summary>
+        </member>
+        <member name="M:SideProject.Areas.HelpPage.XmlDocumentationProvider.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SideProject.Areas.HelpPage.XmlDocumentationProvider"/> class.
+            </summary>
+            <param name="documentPath">The physical path to XML document.</param>
+        </member>
+        <member name="M:SideProject.Controllers.CreateProjectController.AddProject(SideProject.ViewModel.ProjectDetail)">
+            <summary>
+            新增專案(所有欄位必填)
+            </summary>
+            <param name="content"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.CreateProjectController.UploadGroupPic">
+            <summary>
+            專案組別圖片上傳
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.CreateProjectController.EditProject(System.Int32,SideProject.ViewModel.ProjectDetail)">
+            <summary>
+            編輯專案資料(參加截止日僅顯示，如有更換組別圖片，會在UploadGroupPic的api取得回傳的圖片新檔名，一起存入會員資料)
+            </summary>
+            <param name="Id">專案ID</param>
+            <param name="content">專案內容</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.MatchController.AttendProject(System.Int32,SideProject.ViewModel.ApplicantInfo)">
+            <summary>
+            申請人申請參與專案(for申請人)
+            </summary>
+            <param name="Id">要參加的專案ID</param>
+            <param name="info"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.MatchController.LeaveProject(System.Int32)">
+            <summary>
+            申請人離開專案(for申請人)
+            </summary>
+            <param name="projectId">要離開的專案ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.MatchController.GetApplicant(System.Int32)">
+            <summary>
+            取得專案申請者列表(for發起人)
+            </summary>
+            <param name="id">專案的ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.MatchController.GetApplicantInfo(System.Int32,System.Int32)">
+            <summary>
+            取得專案某申請人的詳細資料(for發起人)
+            </summary>
+            <param name="memberId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.MatchController.PassApplicant(System.Int32,System.Int32)">
+            <summary>
+            通過申請人(for發起人)
+            </summary>
+            <param name="memberId">申請人ID</param>
+            <param name="projectId">申請人申請的專案ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.MatchController.RejectApplicant(System.Int32,System.Int32)">
+            <summary>
+            不通過申請人(for發起人)
+            </summary>
+            <param name="memberId">申請人ID</param>
+            <param name="projectId">申請人申請的專案ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.MatchController.StartProject(System.Int32)">
+            <summary>
+            發起人選定成員，開始專案，審核中申請人皆轉為未通過(for發起人)
+            </summary>
+            <param name="projectId">要開始的專案ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.MatchController.GiveUpProject(System.Int32)">
+            <summary>
+            廢棄專案(for發起人)
+            </summary>
+            <param name="projectId">專案ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.MatchController.DeleteProject(System.Int32)">
+            <summary>
+            刪除專案(for發起人)
+            </summary>
+            <param name="projectId">專案ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.MatchController.CloseProject(System.Int32)">
+            <summary>
+            關閉專案(for發起人)
+            </summary>
+            <param name="projectId">專案ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.MatchController.RestartProject(System.Int32)">
+            <summary>
+            重啟專案(for發起人)
+            </summary>
+            <param name="projectId">專案ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.SuccessProjectController.GetSussessProjectBanner">
+            <summary>
+            已完成專案的Banner與對應專案
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.SuccessProjectController.GetSussessProject(SideProject.ViewModel.SelectProject,System.Int32)">
+            <summary>
+            會員取得已完成專案列表(有分頁)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.SuccessProjectController.GetSussessProjectGuest(SideProject.ViewModel.SelectProject,System.Int32)">
+            <summary>
+            非會員取得已完成專案列表(有分頁)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.SuccessProjectController.UploadProjectBanner">
+            <summary>
+            上傳專案Banner
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.SuccessProjectController.UploadProjectPics">
+            <summary>
+            上傳專案完成圖片(多圖)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.SuccessProjectController.CheckSussessProject(System.Int32,SideProject.ViewModel.SuccessData)">
+            <summary>
+            新增專案完成的資料(所有欄位必填，如有更換組別圖片，會在UploadGroupPic的api取得回傳的圖片新檔名，一起存入會員資料)
+            </summary>
+            <param name="ProjectId">專案ID</param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.SuccessProjectController.GetSuccessProjectDetail(System.Int32)">
+            <summary>
+            取得完成的專案詳細內容
+            </summary>
+            <param name="projectId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.TestController.ProfilePicture">
+            <summary>
+            頭像上傳
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.TestController.GetAddProject">
+            <summary>
+            發起人取得發起的專案列表(沒有分頁)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.TestController.GetAttendProjectNoPage">
+            <summary>
+            會員取得參與的專案列表(沒有分頁)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.TestController.GetApplyProjectNoPage">
+            <summary>
+            會員取得申請的專案列表(沒有分頁)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.TestController.GetAllProjectNoPage">
+            <summary>
+            會員取得專案列表(沒有分頁)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.TestController.GetAllProjectGuestNoPage">
+            <summary>
+            非會員取得專案列表(不含已完成，沒有分頁)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.TestController.GetSussessProjectNoPage">
+            <summary>
+            會員取得已完成專案列表(沒有分頁)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.TestController.GetSussessProjectGuestNoPage(SideProject.ViewModel.SelectProject,System.Int32)">
+            <summary>
+            非會員取得已完成專案列表(沒有分頁)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.TestController.GetSaveProjectNoPage">
+            <summary>
+            會員取得收藏的專案列表(無分頁)
+            </summary>
+            <param name="page">目前所在頁數</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.TestController.test111">
+            <summary>
+            測試技能表用，不要理這支api~
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.UserController.UserInfo">
+            <summary>
+            會員資料檢視
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.UserController.EditUserInfo(SideProject.ViewModel.EditUserInfon)">
+            <summary>
+            編輯會員資料(如有更換頭像，會在EditProfilePic的api取得回傳的頭貼新檔名，一起存入會員資料)
+            </summary>
+            <param name="Info">會員資料所需欄位</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.UserController.GetAddProject(System.Int32)">
+            <summary>
+            發起人取得發起的專案列表(有分頁)
+            </summary>
+            <param name="page">目前所在頁數</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.UserController.GetAttendProject(System.Int32)">
+            <summary>
+            會員取得參與的專案列表(有分頁)
+            </summary>
+            <param name="page">目前所在頁數</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.UserController.GetApplyProject(System.Int32)">
+            <summary>
+            會員取得申請的專案列表(有分頁)
+            </summary>
+            <param name="page">目前所在頁數</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.UserController.GetSaveProject(System.Int32)">
+            <summary>
+            會員取得收藏的專案列表(有分頁)
+            </summary>
+            <param name="page">目前所在頁數</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.ViewProjectController.GetAllProject(SideProject.ViewModel.SelectProject,System.Int32)">
+            <summary>
+            會員取得專案列表(不含已完成，有分頁)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.ViewProjectController.GetAllProjectGuest(SideProject.ViewModel.SelectProject,System.Int32)">
+            <summary>
+            非會員取得專案列表(不含已完成，有分頁)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.ViewProjectController.GetProjectDetail(System.Int32)">
+            <summary>
+            取得專案詳細內容
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.ViewProjectController.SendProjectMessage(System.Int32,System.String,System.String)">
+            <summary>
+            會員在專案留言
+            </summary>
+            <param name="projectId"></param>
+            <param name="messageContent"></param>
+            <param name="title"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.ViewProjectController.GetProjectMessage(System.Int32)">
+            <summary>
+            取得特定專案的所有留言
+            </summary>
+            <param name="projectId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.ViewProjectController.CheckUser(System.Int32)">
+            <summary>
+            驗證是否為發起人
+            </summary>
+            <param name="projectId">該專案ID</param>
+            <returns></returns>
+        </member>
+        <member name="T:SideProject.Controllers.CommonController">
+            <summary>
+            註冊.登入.圖片上傳.技能列表
+            </summary>
+        </member>
+        <member name="M:SideProject.Controllers.CommonController.Signup(SideProject.ViewModel.SignUp)">
+            <summary>
+            會員註冊
+            </summary>
+            <param name="data">註冊資料</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.CommonController.testLogin(SideProject.ViewModel.Login)">
+            <summary>
+            會員登入
+            </summary>
+            <param name="data">data包含帳密</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.CommonController.UploadProfile">
+            <summary>
+            大頭貼上傳
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.CommonController.AddFavoriteProject(System.Int32)">
+            <summary>
+            收藏專案
+            </summary>
+            <param name="projectId">專案ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.CommonController.CancelFavoriteProject(System.Int32)">
+            <summary>
+            取消收藏專案
+            </summary>
+            <param name="projectId">專案ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.CommonController.PresentFavoriteProject(System.Int32)">
+            <summary>
+            顯示是否收藏專案(如果他有收藏，收藏按鈕用這支來判斷，會長不一樣)
+            </summary>
+            <param name="projectId">專案ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.CommonController.UpdateProjectState">
+            <summary>
+            判斷時間更改狀態(update表單時間至少要前一天才會變動)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.CommonController.AddSkills(System.String)">
+            <summary>
+            新增技能列表
+            </summary>
+            <param name="skills"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.CommonController.Skills">
+            <summary>
+            技能列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.CommonController.AddProjectClass(System.String)">
+            <summary>
+            新增專案類別列表
+            </summary>
+            <param name="ProjectClass"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.CommonController.GetProjectClass">
+            <summary>
+            專案類別列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:SideProject.ViewModel.EditUserInfon">
+            <summary>
+            會員資料編輯data
+            </summary>
+        </member>
+        <member name="T:SideProject.ViewModel.GetProjectList">
+            <summary>
+            專案列表顯示資料
+            </summary>
+        </member>
+        <member name="T:SideProject.ViewModel.SignUp">
+            <summary>
+            註冊的變數
+            </summary>
+        </member>
+        <member name="P:SideProject.ViewModel.SignUp.Account">
+            <summary>
+            帳號
+            </summary>
+        </member>
+        <member name="T:SideProject.JWT.JwtAuthFilter">
+            <summary>
+            繼承ActionFilterAttribute
+            </summary>
+        </member>
+        <member name="M:SideProject.JWT.JwtAuthFilter.OnActionExecuting(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            過濾有用[JwtAuthFilter]標籤請求的API的JwtToken狀態及內容
+            </summary>
+            <param name="actionContext"></param>
+        </member>
+        <member name="M:SideProject.JWT.JwtAuthFilter.IsTokenExpired(System.String)">
+            <summary>
+            驗證token時效
+            </summary>
+            <param name="dateTime"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SideProject.JWT.JwtAuthUtil">
+            <summary>
+            生成JwtToken
+            </summary>
+        </member>
+        <member name="M:SideProject.JWT.JwtAuthUtil.GenerateToken(System.Int32,System.String,System.String)">
+            <summary>
+            產生token
+            </summary>
+            <param name="id">ID</param>
+            <param name="account">帳號</param>
+            <param name="nickName">暱稱</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.JWT.JwtAuthUtil.GetId(System.String)">
+            <summary>
+            查詢使用者ID
+            </summary>
+            <param name="Token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.JWT.JwtAuthUtil.GetUserList(System.String)">
+            <summary>
+            查詢使用者Token內容
+            </summary>
+            <param name="Token">Token</param>
+            <returns></returns>
+        </member>
+        <member name="T:SideProject.PassSecurity.HashWithSaltResult">
+            <summary>
+            salt and digest
+            </summary>
+        </member>
+        <member name="T:SideProject.PassSecurity.RNG">
+            <summary>
+            random number generator
+            </summary>
+        </member>
+    </members>
+</doc>
