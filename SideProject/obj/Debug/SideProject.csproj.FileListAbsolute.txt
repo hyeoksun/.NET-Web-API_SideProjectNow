@@ -150,3 +150,6 @@ C:\Users\chun0\source\repos\SideProject\SideProject\obj\Debug\SideProject.Migrat
 C:\Users\chun0\source\repos\SideProject\SideProject\obj\Debug\SideProject.Migrations.EditCollection.resources
 C:\Users\chun0\source\repos\SideProject\SideProject\obj\Debug\SideProject.Migrations.CreateUpdateState.resources
 C:\Users\chun0\source\repos\SideProject\SideProject\obj\Debug\SideProject.Migrations.EditName.resources
+C:\Users\chun0\source\repos\SideProject\SideProject\obj\Debug\SideProject.Migrations.projectMaxEdit.resources
+C:\Users\chun0\source\repos\SideProject\SideProject\obj\Debug\SideProject.Migrations.projectSkillTable.resources
+C:\Users\chun0\source\repos\SideProject\SideProject\obj\Debug\SideProject.Migrations.skillEdit.resources

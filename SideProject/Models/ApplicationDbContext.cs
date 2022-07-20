@@ -29,6 +29,7 @@ namespace SideProject.Models
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Collection> Collections { get; set; }
         public virtual  DbSet<UpdateProjectState> UpdateProjectStates { get; set; }
+        public virtual DbSet<ProjectSkills> ProjectSkills { get; set; }
     }
 
     //public class MyEntity

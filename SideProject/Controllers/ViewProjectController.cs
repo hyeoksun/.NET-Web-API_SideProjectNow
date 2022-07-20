@@ -46,11 +46,11 @@ namespace SideProject.Controllers
                 projects = projects.Where(x => x.GroupNum == data.groupNum);
             }
 
-            if (!string.IsNullOrWhiteSpace(data.skill))
+            if (data.skill.HasValue)
             {
-                projects = projects.Where(x=>x.PartnerSkills.Contains(data.skill));
+                projects = projects.Where(x => x.ProjectSkill.Any(y => y.SkillId == data.skill));
             }
-            
+
             if (!string.IsNullOrWhiteSpace(data.keyword))
             {
                 projects = projects.Where(x => x.ProjectName.Contains(data.keyword));
@@ -157,6 +157,29 @@ namespace SideProject.Controllers
         }
 
         /// <summary>
+        /// 會員在瀏覽專案頁面取得已收藏的專案
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetAllCollectProject")]
+        [JwtAuthFilter]
+        public IHttpActionResult GetAllCollectProject()
+        {
+            var data = JwtAuthUtil.GetUserList(Request.Headers.Authorization.Parameter);
+            var memberID = data.Item1;
+            var projectIdList = db.Members.Find(memberID).Collection.Select(y => y.ProjectId).ToList(); 
+            var projectDetail = db.Projects.Where(x=>projectIdList.Contains(x.Id) && !(x.ProjectState.Equals("已完成")) && !(x.ProjectState.Equals("已刪除"))).Select(y => new
+            {
+                y.Id,
+                y.GroupPhoto,
+                y.ProjectName
+            }).ToList();
+
+            return Ok(new { status = "success", message = "已完成外的專案列表", data = projectDetail });
+
+        }
+
+        /// <summary>
         /// 非會員取得專案列表(不含已完成，有分頁)
         /// </summary>
         /// <returns></returns>
@@ -186,9 +209,9 @@ namespace SideProject.Controllers
                 projects = projects.Where(x => x.GroupNum == data.groupNum);
             }
 
-            if (!string.IsNullOrWhiteSpace(data.skill))
+            if (data.skill.HasValue)
             {
-                projects = projects.Where(x => x.PartnerSkills.Contains(data.skill));
+                projects = projects.Where(x => x.ProjectSkill.Any(y => y.SkillId == data.skill));
             }
 
             if (!string.IsNullOrWhiteSpace(data.keyword))
@@ -363,7 +386,7 @@ namespace SideProject.Controllers
                 }
 
                 var applicantInfo = db.Members;
-                var applicantIdList = db.Applicant.Where(x => x.ProjectsId == projectId.Id).Select(x => x.MembersId)
+                var applicantIdList = db.Applicant.Where(x => x.ProjectsId == projectId.Id && x.ApplicantState.Equals("已通過")).Select(x => x.MembersId)
                     .ToList();
                 ArrayList applicants = new ArrayList();
                 foreach (var item in applicantIdList)

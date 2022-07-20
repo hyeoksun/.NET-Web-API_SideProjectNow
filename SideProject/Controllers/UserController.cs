@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -186,11 +187,11 @@ namespace SideProject.Controllers
 
             var account = data.Item2;
             var user = db.Members.FirstOrDefault(x => x.Account == account);
-            var editUser = from member in db.Members where member.Account == user.Account select member;
+            var editUser = db.Members.FirstOrDefault(x=>x.Id==user.Id);
 
             string edit = "";
             string editSkills = "";
-            if (user.Skills != null)
+            if (Info.Skills != null)
             {
                 StringBuilder builder = new StringBuilder();
                 foreach (var value in Info.Skills)
@@ -206,25 +207,40 @@ namespace SideProject.Controllers
                 editSkills = null;
             }
 
+            editUser.NickName = Info.NickName;
+            editUser.Gender = Info.Gender;
+            editUser.ProfilePicture = Info.ProfilePicture;
+            editUser.Ig = Info.Ig;
+            editUser.Fb = Info.Fb;
+            editUser.ProfileWebsite = Info.ProfileWebsite;
+            editUser.ContactTime = Info.ContactTime;
+            editUser.SelfIntroduction = Info.SelfIntroduction;
+            editUser.WorkState = Info.WorkState;
+            editUser.Language = Info.Language;
+            editUser.Company = Info.Company;
+            editUser.Industry = Info.Industry;
+            editUser.Position = Info.Position;
+            editUser.Skills = editSkills;
+            editUser.JobDescription = Info.JobDescription;
 
-            foreach (var member in editUser)
-            {
-                member.NickName = Info.NickName;
-                member.Gender = Info.Gender;
-                member.ProfilePicture = Info.ProfilePicture;
-                member.Ig = Info.Ig;
-                member.Fb = Info.Fb;
-                member.ProfileWebsite = Info.ProfileWebsite;
-                member.ContactTime = Info.ContactTime;
-                member.SelfIntroduction = Info.SelfIntroduction;
-                member.WorkState = Info.WorkState;
-                member.Language = Info.Language;
-                member.Company = Info.Company;
-                member.Industry = Info.Industry;
-                member.Position = Info.Position;
-                member.Skills = editSkills;
-                member.JobDescription = Info.JobDescription;
-            }
+            //foreach (var member in editUser)
+            //{
+            //    member.NickName = Info.NickName;
+            //    member.Gender = Info.Gender;
+            //    member.ProfilePicture = Info.ProfilePicture;
+            //    member.Ig = Info.Ig;
+            //    member.Fb = Info.Fb;
+            //    member.ProfileWebsite = Info.ProfileWebsite;
+            //    member.ContactTime = Info.ContactTime;
+            //    member.SelfIntroduction = Info.SelfIntroduction;
+            //    member.WorkState = Info.WorkState;
+            //    member.Language = Info.Language;
+            //    member.Company = Info.Company;
+            //    member.Industry = Info.Industry;
+            //    member.Position = Info.Position;
+            //    member.Skills = editSkills;
+            //    member.JobDescription = Info.JobDescription;
+            //}
 
             db.SaveChanges();
             return Ok(new { status = "success", message = "會員資料成功修改" });
@@ -244,13 +260,8 @@ namespace SideProject.Controllers
 
             var memberID = data.Item1;
             var user = db.Members.FirstOrDefault(x => x.Id == memberID);
-            var projectList = user.Project.Where(x=>x.ProjectState!="已刪除").ToList();
-
-            //var hasProject = db.Projects.FirstOrDefault(x => x.MembersId == memberID);
-            //if (hasProject == null)
-            //{
-            //    return Ok(new { status = "error", message = "此會員無發起的專案" });
-            //}
+            var projectList = user.Project.Where(x => x.ProjectState != "已刪除").ToList();
+            var collects = db.Collections.Where(x => x.MembersId == memberID).ToList();
 
             List<GetProjectList> arrayList = new List<GetProjectList>();
             foreach (var content in projectList)
@@ -290,6 +301,17 @@ namespace SideProject.Controllers
                     }
                 }
 
+                var collect = collects.Where(x => x.ProjectId == content.Id).FirstOrDefault();
+                bool collectResult;
+                if (collect != null)
+                {
+                    collectResult = true;
+                }
+                else
+                {
+                    collectResult = false;
+                }
+
                 GetProjectList newProjectArray = new GetProjectList();
                 newProjectArray.Id = content.Id;
                 newProjectArray.ProjectName = content.ProjectName;
@@ -302,6 +324,7 @@ namespace SideProject.Controllers
                 newProjectArray.PartnerSkills = skillListAry;
                 newProjectArray.GroupNum = content.GroupNum;
                 newProjectArray.GroupPhoto = content.GroupPhoto;
+                newProjectArray.CollectOrNot = collectResult;
 
                 arrayList.Add(newProjectArray);
 
@@ -311,7 +334,7 @@ namespace SideProject.Controllers
             var dataCount = (page - 1) * 10;
             var ProjectLists = arrayList.OrderByDescending(x => x.InitDate).Skip(dataCount).Take(10);
 
-            return Ok(new { status = "success", message = "發起的專案列表", page=page, datatotal = total, data = ProjectLists });
+            return Ok(new { status = "success", message = "發起的專案列表", page = page, datatotal = total, data = ProjectLists });
 
         }
 
@@ -328,12 +351,13 @@ namespace SideProject.Controllers
             var data = JwtAuthUtil.GetUserList(Request.Headers.Authorization.Parameter);
 
             var memberID = data.Item1;
-            var projectIdList = db.Applicant.Where(x => x.ApplicantState == "已通過" && x.MembersId == memberID && x.Project.ProjectState!="已刪除").Select(x => x.ProjectsId).ToList();
+            var projectIdList = db.Applicant.Where(x => x.ApplicantState == "已通過" && x.MembersId == memberID && x.Project.ProjectState != "已刪除").Select(x => x.ProjectsId).ToList();
             var state = db.Applicant.Where(x => x.MembersId == memberID).ToList();
+            var collects = db.Collections.Where(x => x.MembersId == memberID).ToList();
 
             var projectDetail = db.Projects;
             List<Projects> arrayList = new List<Projects>();
-            List<GetAttendProjectList> arrayProjectList = new List<GetAttendProjectList>();
+            List<GetProjectList> arrayProjectList = new List<GetProjectList>();
             foreach (var item in projectIdList)
             {
                 var projectList = projectDetail.Where(x => x.Id == item).ToList();
@@ -374,10 +398,21 @@ namespace SideProject.Controllers
                         }
                     }
 
+                    //取得是否有收藏專案
+                    var collect = collects.Where(x => x.ProjectId == content.Id).FirstOrDefault();
+                    bool collectResult;
+                    if (collect != null)
+                    {
+                        collectResult = true;
+                    }
+                    else
+                    {
+                        collectResult = false;
+                    }
 
                     foreach (var pId in projectList)
                     {
-                        GetAttendProjectList newProjectArray = new GetAttendProjectList();
+                        GetProjectList newProjectArray = new GetProjectList();
 
                         newProjectArray.Id = content.Id;
                         newProjectArray.ProjectName = content.ProjectName;
@@ -390,7 +425,8 @@ namespace SideProject.Controllers
                         newProjectArray.PartnerSkills = skillListAry;
                         newProjectArray.GroupNum = content.GroupNum;
                         newProjectArray.GroupPhoto = content.GroupPhoto;
-
+                        newProjectArray.CollectOrNot = collectResult;
+                        
                         arrayProjectList.Add(newProjectArray);
                     }
 
@@ -419,8 +455,10 @@ namespace SideProject.Controllers
             var data = JwtAuthUtil.GetUserList(Request.Headers.Authorization.Parameter);
 
             var memberID = data.Item1;
-            var projectIdList = db.Applicant.Where(x => x.ApplicantState!="已退出" && x.MembersId == memberID && x.Project.ProjectState!="已刪除").Select(x => x.ProjectsId).ToList();
+            var projectIdList = db.Applicant.Where(x => x.ApplicantState != "已退出" && x.MembersId == memberID && x.Project.ProjectState != "已刪除").Select(x => x.ProjectsId).ToList();
             var state = db.Applicant.Where(x => x.MembersId == memberID).ToList();
+            var collects = db.Collections.Where(x => x.MembersId == memberID).ToList();
+            
             if (projectIdList == null)
             {
                 return Ok(new { status = "success", message = "此會員無申請的專案" });
@@ -433,7 +471,7 @@ namespace SideProject.Controllers
             foreach (var item in projectIdList)
             {
                 var projectList = projectDetail.Where(x => x.Id == item).ToList();
-                
+
                 foreach (var content in projectList)
                 {
                     //讀出所選的技能列表
@@ -470,6 +508,17 @@ namespace SideProject.Controllers
                         }
                     }
 
+                    //取得是否有收藏專案
+                    var collect = collects.Where(x => x.ProjectId == content.Id).FirstOrDefault();
+                    bool collectResult;
+                    if (collect != null)
+                    {
+                        collectResult = true;
+                    }
+                    else
+                    {
+                        collectResult = false;
+                    }
 
                     foreach (var pId in projectList)
                     {
@@ -488,7 +537,8 @@ namespace SideProject.Controllers
                         newProjectArray.GroupNum = content.GroupNum;
                         newProjectArray.GroupPhoto = content.GroupPhoto;
                         newProjectArray.ProjectState = content.ProjectState;
-
+                        newProjectArray.CollectOrNot = collectResult;
+                        
                         arrayProjectList.Add(newProjectArray);
                     }
 
@@ -499,8 +549,8 @@ namespace SideProject.Controllers
             int total = arrayProjectList.Count;
             var dataCount = (page - 1) * 10;
             var projectLists = arrayProjectList.OrderByDescending(x => x.InitDate).Skip(dataCount).Take(10);
-                
-            return Ok(new { status = "success", message = "申請的專案列表",page=page, datatotal = total, data = projectLists });
+
+            return Ok(new { status = "success", message = "申請的專案列表", page = page, datatotal = total, data = projectLists });
 
         }
 
@@ -518,12 +568,12 @@ namespace SideProject.Controllers
             var data = JwtAuthUtil.GetUserList(Request.Headers.Authorization.Parameter);
 
             var memberID = data.Item1;
-            var projectIdList = db.Collections.Where(x => x.MembersId==memberID).Select(x => x.ProjectId).ToList();
-
+            var projectIdList = db.Collections.Where(x => x.MembersId == memberID).Select(x => x.ProjectId).ToList();
+            var collects = db.Collections.Where(x => x.MembersId == memberID).ToList();
 
             var projectDetail = db.Projects;
             List<Projects> arrayList = new List<Projects>();
-            List<GetAttendProjectList> arrayProjectList = new List<GetAttendProjectList>();
+            List<GetProjectList> arrayProjectList = new List<GetProjectList>();
             foreach (var item in projectIdList)
             {
                 var projectList = projectDetail.Where(x => x.Id == item && !(x.ProjectState.Equals("已刪除"))).ToList();
@@ -564,10 +614,21 @@ namespace SideProject.Controllers
                         }
                     }
 
+                    //取得是否有收藏專案
+                    var collect = collects.Where(x => x.ProjectId == content.Id).FirstOrDefault();
+                    bool collectResult;
+                    if (collect != null)
+                    {
+                        collectResult = true;
+                    }
+                    else
+                    {
+                        collectResult = false;
+                    }
 
                     foreach (var pId in projectList)
                     {
-                        GetAttendProjectList newProjectArray = new GetAttendProjectList();
+                        GetProjectList newProjectArray = new GetProjectList();
 
                         newProjectArray.Id = content.Id;
                         newProjectArray.ProjectName = content.ProjectName;
@@ -580,7 +641,8 @@ namespace SideProject.Controllers
                         newProjectArray.PartnerSkills = skillListAry;
                         newProjectArray.GroupNum = content.GroupNum;
                         newProjectArray.GroupPhoto = content.GroupPhoto;
-
+                        newProjectArray.CollectOrNot = collectResult;
+                        
                         arrayProjectList.Add(newProjectArray);
                     }
 
@@ -593,6 +655,120 @@ namespace SideProject.Controllers
             var projectLists = arrayProjectList.OrderByDescending(x => x.InitDate).Skip(dataCount).Take(10);
 
             return Ok(new { status = "success", message = "收藏的的專案列表", page = page, datatotal = total, data = projectLists });
+
+        }
+
+
+        /// <summary>
+        /// 會員取得通知的專案列表(有分頁)
+        /// </summary>
+        /// <param name="page">目前所在頁數</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetNotification")]
+        [JwtAuthFilter]
+        public IHttpActionResult GetNotification(int page)
+        {
+            var data = JwtAuthUtil.GetUserList(Request.Headers.Authorization.Parameter);
+
+            var memberID = data.Item1;
+
+            List<NoticeId> projectIdList = new List<NoticeId>();
+            var applicantList = db.Applicant.Where(x => x.MembersId == memberID && x.ApplicantState.Equals("已通過")).ToList();
+            foreach (var list in applicantList)
+            {
+                NoticeId pid = new NoticeId();
+                pid.Id = list.ProjectsId;
+                projectIdList.Add(pid);
+            }
+
+            var projectList = db.Projects.Where(x =>
+                x.MembersId == memberID && !(x.ProjectState.Equals("已刪除")) && !(x.ProjectState.Equals("媒合中")) &&
+                !(x.ProjectState.Equals("已關閉"))).ToList();
+            foreach (var content in projectList)
+            {
+                NoticeId pid = new NoticeId();
+                pid.Id = content.Id;
+                projectIdList.Add(pid);
+            }
+
+            var projectDetail = db.Projects;
+            List<GetNoticeList> arrayProjectList = new List<GetNoticeList>();
+
+            foreach (var item in projectIdList)
+            {
+                GetNoticeList projectDeteil = new GetNoticeList();
+                
+                var arrayProjectLists = projectDetail.FirstOrDefault(x => x.Id == item.Id);
+
+                projectDeteil.Id = arrayProjectLists.Id;
+                projectDeteil.ProjectName = arrayProjectLists.ProjectName;
+                projectDeteil.GroupPhoto = arrayProjectLists.GroupPhoto;
+
+                arrayProjectList.Add(projectDeteil);
+            }
+
+            int total = arrayProjectList.Count;
+            var dataCount = (page - 1) * 10;
+            var projectLists = arrayProjectList.OrderByDescending(x => x.InitDate).Skip(dataCount).Take(10);
+
+            return Ok(new { status = "success", message = "通知的專案列表", page = page, datatotal = total, data = projectLists });
+
+        }
+
+        /// <summary>
+        /// 會員取得組員的聯絡方式
+        /// </summary>
+        /// <param name="projectId">專案ID</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetGroupMembers")]
+        [JwtAuthFilter]
+        public IHttpActionResult GetGroupMembers(int projectId)
+        {
+            var data = JwtAuthUtil.GetUserList(Request.Headers.Authorization.Parameter);
+            var project = db.Projects.FirstOrDefault(x => x.Id == projectId);
+            ArrayList member = new ArrayList();
+            foreach (var item in db.Members)
+            {
+                if (item.Id == project.MembersId)
+                {
+                    var memberData = new
+                    {
+                        item.ProfilePicture,
+                        item.NickName,
+                        item.Account
+                    };
+                    member.Add(memberData);
+                }
+            }
+
+            var applicantInfo = db.Members;
+            var applicantIdList = db.Applicant.Where(x => x.ProjectsId == projectId && x.ApplicantState.Equals("已通過")).Select(x => x.MembersId)
+                .ToList();
+            ArrayList applicants = new ArrayList();
+            foreach (var item in applicantIdList)
+            {
+                var applicantList = applicantInfo.Where(x => x.Id == item).ToList();
+                foreach (var info in applicantList)
+                {
+                    var infoData = new
+                    {
+                        info.ProfilePicture,
+                        info.NickName,
+                        info.Account
+                    };
+                    applicants.Add(infoData);
+                }
+            }
+
+            var result = new
+            {
+                Organizer = member,
+                Applicants = applicants
+            };
+
+            return Ok(new { status = "success", message = "申請的專案列表", data = result });
 
         }
     }

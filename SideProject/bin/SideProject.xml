@@ -594,6 +594,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:SideProject.Controllers.SuccessProjectController.GetCollectSuccessProject">
+            <summary>
+            會員在瀏覽專案頁面取得已收藏的專案
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:SideProject.Controllers.SuccessProjectController.GetSussessProjectGuest(SideProject.ViewModel.SelectProject,System.Int32)">
             <summary>
             非會員取得已完成專案列表(有分頁)
@@ -682,12 +688,6 @@
             <param name="page">目前所在頁數</param>
             <returns></returns>
         </member>
-        <member name="M:SideProject.Controllers.TestController.test111">
-            <summary>
-            測試技能表用，不要理這支api~
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:SideProject.Controllers.UserController.UserInfo">
             <summary>
             會員資料檢視
@@ -729,9 +729,29 @@
             <param name="page">目前所在頁數</param>
             <returns></returns>
         </member>
+        <member name="M:SideProject.Controllers.UserController.GetNotification(System.Int32)">
+            <summary>
+            會員取得通知的專案列表(有分頁)
+            </summary>
+            <param name="page">目前所在頁數</param>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.UserController.GetGroupMembers(System.Int32)">
+            <summary>
+            會員取得組員的聯絡方式
+            </summary>
+            <param name="projectId">專案ID</param>
+            <returns></returns>
+        </member>
         <member name="M:SideProject.Controllers.ViewProjectController.GetAllProject(SideProject.ViewModel.SelectProject,System.Int32)">
             <summary>
             會員取得專案列表(不含已完成，有分頁)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SideProject.Controllers.ViewProjectController.GetAllCollectProject">
+            <summary>
+            會員在瀏覽專案頁面取得已收藏的專案
             </summary>
             <returns></returns>
         </member>

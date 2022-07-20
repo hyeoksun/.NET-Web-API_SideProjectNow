@@ -21,6 +21,7 @@ namespace SideProject.ViewModel
         //public ArrayList ProjectTypeAry { get; set; }
         public string ApplicantState { get; set; }
         public string ProjectState { get; set; }
+        public bool CollectOrNot { get; set; }
 
     }
 }

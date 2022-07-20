@@ -36,23 +36,25 @@ namespace SideProject.Controllers
 
             if (project.MembersId != user.Id)
             {
-                var hasAttend = db.Applicant.FirstOrDefault(x => x.MembersId == user.Id);
-                var applyProject = db.Applicant.FirstOrDefault(x => x.ProjectsId == Id);
-                if (hasAttend != null && applyProject !=null)
+                var hasAttend = db.Applicant.FirstOrDefault(x => x.MembersId == user.Id&&x.ProjectsId==Id);
+                if (hasAttend != null)
                 {
                     return Ok(new { status = "error", message = "您已申請過該專案" });
                 }
-                Applicants applicant = new Applicants();
-                applicant.MembersId = user.Id;
-                applicant.ApplicantMessage = info.ApplicantMessage;
-                applicant.ApplicantSelfIntro = info.ApplicantSelfIntro;
-                applicant.ApplicantState = "審核中";
-                applicant.ProjectsId = project.Id;
-                applicant.InitDate=DateTime.Now;
+                else
+                {
+                    Applicants applicant = new Applicants();
+                    applicant.MembersId = user.Id;
+                    applicant.ApplicantMessage = info.ApplicantMessage;
+                    applicant.ApplicantSelfIntro = info.ApplicantSelfIntro;
+                    applicant.ApplicantState = "審核中";
+                    applicant.ProjectsId = project.Id;
+                    applicant.InitDate = DateTime.Now;
 
-                db.Applicant.Add(applicant);
-                db.SaveChanges();
-                return Ok(new {status = "success", message = "申請專案成功"});
+                    db.Applicant.Add(applicant);
+                    db.SaveChanges();
+                    return Ok(new { status = "success", message = "申請專案成功" });
+                }
             }
             else
             {
@@ -97,23 +99,18 @@ namespace SideProject.Controllers
         [Route("GetApplicant")]
         public IHttpActionResult GetApplicant(int id)
         {
-            var applicantIdList = db.Applicant.Where(x => x.ProjectsId == id).ToList();
-            ArrayList data = new ArrayList();
-            foreach (var item in applicantIdList)
-            {
-                var applyInfo = new
+            var applicantIdList = db.Applicant.Where(x => x.ProjectsId == id).
+                Join(db.Members,a=>a.MembersId,b=>b.Id,(a,b)=>new
                 {
-                    item.ProjectsId,
-                    item.ApplicantState,
-                    item.InitDate,
-                    item.Project.Member.NickName,
-                    item.ApplicantMessage,
-                    item.MembersId
-                };
-                data.Add(applyInfo);
-            }
+                    ProjectsId=a.ProjectsId,
+                    ApplicantState=a.ApplicantState,
+                    InitDate=a.InitDate,
+                    NickName=b.NickName,
+                    ApplicantMessage=a.ApplicantMessage,
+                    MembersId=a.MembersId
+                }).ToList();
 
-            return Ok(new {status = "success", message = "該專案申請者列表", data = data});
+            return Ok(new {status = "success", message = "該專案申請者列表", data = applicantIdList});
         }
 
         /// <summary>
@@ -326,6 +323,12 @@ namespace SideProject.Controllers
             var userAndProject = from target in db.Projects
                 where (target.Id == projectId && target.MembersId == user.Id)
                 select target;
+
+            var applicant = db.Applicant.Where(x => x.ProjectsId == projectId).ToList();
+            foreach (var member in applicant)
+            {
+                member.ApplicantState = "未通過";
+            }
             
             foreach (var item in userAndProject)
             {

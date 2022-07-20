@@ -22,7 +22,6 @@ namespace SideProject.Models
         [Display(Name = "專案內容")]//顯示名稱
         public string ProjectContext { get; set; }
 
-        [MaxLength(30)]//限制最大字數，未設定為Max
         [Display(Name = "專案圖片")]//顯示名稱
         public string GroupPhoto { get; set; }
 
@@ -39,12 +38,10 @@ namespace SideProject.Models
         public int GroupNum { get; set; }
 
         [Required]//必填
-        [MaxLength(1000)]//限制最大字數，未設定為Max
         [Display(Name = "夥伴條件")]//顯示名稱
         public string PartnerCondition { get; set; }
 
         [Required]//必填
-        [MaxLength(1000)]//限制最大字數，未設定為Max
         [Display(Name = "夥伴技能")]//顯示名稱
         public string PartnerSkills { get; set; }
 
@@ -53,19 +50,16 @@ namespace SideProject.Models
         public int ProjectTypeId { get; set; }
 
         [Required]//必填
-        [MaxLength(5)]//限制最大字數，未設定為Max
+        [MaxLength(10)]//限制最大字數，未設定為Max
         [Display(Name = "專案狀態")]//顯示名稱
         public string ProjectState { get; set; }
 
-        [MaxLength(100)]//限制最大字數，未設定為Max
         [Display(Name = "專案網址")]//顯示名稱
         public string ProjectWebsite { get; set; }
 
-        [MaxLength(30)]//限制最大字數，未設定為Max
         [Display(Name = "專案封面圖")]//顯示名稱
         public string ProjectBanner { get; set; }
 
-        [MaxLength(100)]//限制最大字數，未設定為Max
         [Display(Name = "專案內容圖")]//顯示名稱
         public string ProjectPhotos { get; set; }
 
@@ -83,6 +77,7 @@ namespace SideProject.Models
         public virtual ProjectClass ProjectClass { get; set; }
 
         public virtual ICollection<Applicants> Applicant { get; set; }
+        public virtual ICollection<ProjectSkills> ProjectSkill { get; set; }
 
 
     }

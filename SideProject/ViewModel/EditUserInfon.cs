@@ -24,7 +24,7 @@ namespace SideProject.ViewModel
         public string Company { get; set; }
         public string Industry { get; set; }
         public string Position { get; set; }
-        public List<string> Skills { get; set; }
+        public List<int> Skills { get; set; }
         public string JobDescription { get; set; }
     }
 }

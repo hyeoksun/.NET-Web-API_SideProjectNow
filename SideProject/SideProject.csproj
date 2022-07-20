@@ -280,9 +280,22 @@
     <Compile Include="Migrations\202204010852274_EditName.Designer.cs">
       <DependentUpon>202204010852274_EditName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202204110201481_projectMaxEdit.cs" />
+    <Compile Include="Migrations\202204110201481_projectMaxEdit.Designer.cs">
+      <DependentUpon>202204110201481_projectMaxEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202204111028240_projectSkillTable.cs" />
+    <Compile Include="Migrations\202204111028240_projectSkillTable.Designer.cs">
+      <DependentUpon>202204111028240_projectSkillTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202204120205298_skillEdit.cs" />
+    <Compile Include="Migrations\202204120205298_skillEdit.Designer.cs">
+      <DependentUpon>202204120205298_skillEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Collection.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\ProjectClass.cs" />
+    <Compile Include="Models\ProjectSkills.cs" />
     <Compile Include="Models\Skills.cs" />
     <Compile Include="Models\UpdateProjectState.cs" />
     <Compile Include="Startup.cs" />
@@ -290,9 +303,11 @@
     <Compile Include="ViewModel\EditUserInfon.cs" />
     <Compile Include="ViewModel\GetAttendProjectList.cs" />
     <Compile Include="ViewModel\GetMessage.cs" />
+    <Compile Include="ViewModel\GetNoticeList.cs" />
     <Compile Include="ViewModel\GetProjectList.cs" />
     <Compile Include="ViewModel\Login.cs" />
     <Compile Include="ViewModel\GetApplyProjectList.cs" />
+    <Compile Include="ViewModel\NoticeId.cs" />
     <Compile Include="ViewModel\ProjectDetail.cs" />
     <Compile Include="ViewModel\SelectProject.cs" />
     <Compile Include="ViewModel\SignUp.cs" />
@@ -366,14 +381,9 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Upload\ProfilePicture\defalt-01.png" />
-    <Content Include="Upload\ProfilePicture\defalt-02.png" />
-    <Content Include="Upload\ProfilePicture\defalt-03.png" />
-    <Content Include="Upload\ProfilePicture\defalt-04.png" />
-    <Content Include="Upload\ProfilePicture\defalt-05.png" />
-    <Content Include="Upload\ProfilePicture\defalt-06.png" />
-    <Content Include="Upload\ProfilePicture\defalt-07.png" />
-    <Content Include="Upload\ProfilePicture\defalt-08.png" />
+    <Content Include="Upload\ProfilePicture\default-01.png" />
+    <Content Include="Upload\ProfilePicture\default-02.png" />
+    <Content Include="Upload\ProfilePicture\default-03.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -479,6 +489,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202204010852274_EditName.resx">
       <DependentUpon>202204010852274_EditName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204110201481_projectMaxEdit.resx">
+      <DependentUpon>202204110201481_projectMaxEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204111028240_projectSkillTable.resx">
+      <DependentUpon>202204111028240_projectSkillTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204120205298_skillEdit.resx">
+      <DependentUpon>202204120205298_skillEdit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

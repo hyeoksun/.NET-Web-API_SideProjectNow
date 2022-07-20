@@ -92,9 +92,9 @@ namespace SideProject.Controllers
                 projects = projects.Where(x => x.GroupNum == data.groupNum);
             }
 
-            if (!string.IsNullOrWhiteSpace(data.skill))
+            if (data.skill.HasValue)
             {
-                projects = projects.Where(x => x.PartnerSkills.Contains(data.skill));
+                projects = projects.Where(x => x.ProjectSkill.Any(y => y.SkillId == data.skill));
             }
 
             if (!string.IsNullOrWhiteSpace(data.keyword))
@@ -204,6 +204,30 @@ namespace SideProject.Controllers
 
         }
 
+
+        /// <summary>
+        /// 會員在瀏覽專案頁面取得已收藏的專案
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetCollectSuccessProject")]
+        [JwtAuthFilter]
+        public IHttpActionResult GetCollectSuccessProject()
+        {
+            var data = JwtAuthUtil.GetUserList(Request.Headers.Authorization.Parameter);
+            var memberID = data.Item1;
+            var projectIdList = db.Members.Find(memberID).Collection.Select(y => y.ProjectId).ToList();
+            var projectDetail = db.Projects.Where(x => projectIdList.Contains(x.Id) && x.ProjectState.Equals("已完成")).Select(y => new
+            {
+                y.Id,
+                y.GroupPhoto,
+                y.ProjectName
+            }).ToList();
+
+            return Ok(new { status = "success", message = "已完成外的專案列表", data = projectDetail });
+
+        }
+
         /// <summary>
         /// 非會員取得已完成專案列表(有分頁)
         /// </summary>
@@ -234,9 +258,9 @@ namespace SideProject.Controllers
                 projects = projects.Where(x => x.GroupNum == data.groupNum);
             }
 
-            if (!string.IsNullOrWhiteSpace(data.skill))
+            if (data.skill.HasValue)
             {
-                projects = projects.Where(x => x.PartnerSkills.Contains(data.skill));
+                projects = projects.Where(x => x.ProjectSkill.Any(y => y.SkillId == data.skill));
             }
 
             if (!string.IsNullOrWhiteSpace(data.keyword))
@@ -583,7 +607,7 @@ namespace SideProject.Controllers
 
                 //組員資訊
                 var applicantInfo = db.Members;
-                var applicantIdList = db.Applicant.Where(x => x.ProjectsId == projectContentId.Id).Select(x => x.MembersId).ToList();
+                var applicantIdList = db.Applicant.Where(x => x.ProjectsId == projectContentId.Id&&x.ApplicantState=="已通過").Select(x => x.MembersId).ToList();
                 ArrayList applicants = new ArrayList();
                 foreach (var item in applicantIdList)
                 {

@@ -21,7 +21,6 @@ namespace SideProject.ViewModel
         public int GroupNum { get; set; }
         public ArrayList PartnerSkills { get; set; }
         public ArrayList ProjectTypeId { get; set; }
-        //public ArrayList ProjectTypeAry { get; set; }
         public string ProjectState { get; set; }
         public bool CollectOrNot { get; set; }
     }

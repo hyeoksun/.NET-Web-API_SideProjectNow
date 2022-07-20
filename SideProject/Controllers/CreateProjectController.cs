@@ -30,10 +30,7 @@ namespace SideProject.Controllers
         {
             var data = JwtAuthUtil.GetUserList(Request.Headers.Authorization.Parameter);
 
-            var aaa = DateTime.Now.ToString();
-            DateTime bbb = Convert.ToDateTime(aaa);
-            
-            
+
             StringBuilder builder = new StringBuilder();
             foreach (var value in content.PartnerSkills)
             {
@@ -59,6 +56,16 @@ namespace SideProject.Controllers
 
             db.Projects.Add(project);
             db.SaveChanges();
+            
+            int pId = project.Id;
+            ProjectSkills skills = new ProjectSkills();
+            foreach (var skillint in content.PartnerSkills)
+            {
+                skills.ProjectId = pId;
+                skills.SkillId = skillint;
+                db.ProjectSkills.Add(skills);
+                db.SaveChanges();
+            }
             return Ok(new { status = "success", message = "專案發起成功" });
         }
 
@@ -151,7 +158,7 @@ namespace SideProject.Controllers
         {
 
             var projectExist = db.Projects.FirstOrDefault(x => x.Id == Id);
-            var projectData = from project in db.Projects where project.Id == Id select project;
+            var projectData = db.Projects.Where(x=>x.Id==Id);
             if (projectExist == null)
             {
                 return Ok(new { status = "error", message = "查無專案" });
@@ -177,7 +184,25 @@ namespace SideProject.Controllers
                 item.ProjectTypeId = content.ProjectTypeId;
             }
 
+            var project = db.Projects.FirstOrDefault(x => x.Id == Id);
+            var skill = db.ProjectSkills.Where (x=>x.ProjectId==Id);
+
+            foreach (var item in skill)
+            {
+                db.ProjectSkills.Remove(item);
+            }
+
             db.SaveChanges();
+
+            ProjectSkills skills = new ProjectSkills();
+            foreach (var skillint in content.PartnerSkills)
+            {
+                skills.ProjectId = Id;
+                skills.SkillId = skillint;
+                db.ProjectSkills.Add(skills);
+                db.SaveChanges();
+            }
+
             return Ok(new { status = "success", message = "專案資料修改成功" });
         }
     }

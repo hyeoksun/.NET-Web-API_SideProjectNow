@@ -11,7 +11,7 @@ namespace SideProject.ViewModel
         public DateTime? starTime { get; set; }
         public DateTime? endTime { get; set; }
         public int? groupNum { get; set; }
-        public string skill { get; set; }
+        public int? skill { get; set; }
         public string keyword { get; set; }
     }
 }
